@@ -17,7 +17,8 @@ reset LDA scrcols            . calculate center:  X = (scrcols/2) * scrrows
 	DIV #2
 	MUL scrrows
 	RMO A, X                   . set X to center coordinate
-	J printcur                 . call printcur - print cursor to X 
+	J help                     . display help (comment this line to skip it)
+	J printcur                         
 	
 input RD #0
 	COMP #10                   
@@ -134,7 +135,7 @@ help1 LDA helptxt, X        . read from helptxt, write to stdout
 	J help1    
 rethelp LDX tmpX . restore X, set A to 0 and go to input
 	LDA #0
-	J input
+	J printcur                . draw cursor on the screen and wait for new input 
 	
 scrclear STA tmpA           . save A to tmpA, set it to space and call writeA
 	LDA #32 
