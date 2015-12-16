@@ -33,3 +33,10 @@ Draw an H-tree fractal on the graphical screen.
 * Graphical screen 333x333 at A000
 * Frequency: 10000 Hz = 10 kHz
 * Author: Klemen Klanjšček
+
+### Draw
+Draw on textual screen by typing commands to stdin.
+* Source code: draw.asm
+* Textual screen: 80x25 at 0B800
+* Frequency: 10000 Hz = 10kHz
+* Author: Nejc Kišek
