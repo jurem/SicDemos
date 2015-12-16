@@ -40,3 +40,9 @@ Draw on textual screen by typing commands to stdin.
 * Textual screen: 80x25 at 0B800
 * Frequency: 10000 Hz = 10 kHz
 * Author: Nejc Kišek
+
+### Selection sort
+Print trace of the selection sort algorithm.
+* Source code: selectsort.asm
+* Frequenct: 1000 Hz = 1 kHz
+* Author: Naum Gjorgjeski
