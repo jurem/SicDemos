@@ -34,9 +34,15 @@ Draw an H-tree fractal on the graphical screen.
 * Frequency: 10000 Hz = 10 kHz
 * Author: Klemen Klanjšček
 
-### Draw
+### Textual draw
 Draw on textual screen by typing commands to stdin.
-* Source code: draw.asm
+* Source code: drawtext.asm
 * Textual screen: 80x25 at 0B800
-* Frequency: 10000 Hz = 10kHz
+* Frequency: 10000 Hz = 10 kHz
 * Author: Nejc Kišek
+
+### Selection sort
+Print trace of the selection sort algorithm.
+* Source code: selectsort.asm
+* Frequenct: 1000 Hz = 1 kHz
+* Author: Naum Gjorgjeski
