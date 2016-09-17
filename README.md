@@ -48,8 +48,9 @@ Print trace of the selection sort algorithm.
 * Author: Naum Gjorgjeski
 
 ### Link - Factorial
-Calculates factorial for numbers from 1 to 10 and writes the result to standard output or on the textual screen. Writen in multiple files that have to be assembled and then linked before loading.
+Calculates factorial for numbers from 1 to 10 and writes the result to standard output or on the textual screen. Written in multiple files that have to be assembled and then linked before loading.
 If you use print.obj, the results are displayed on stdout. If you use print2.obj instead, they are displayed on textual screen.
+
 Linking order: main.obj, fact.obj, print.obj, stack.obj, ending.obj 
 * Source code: .asm files in 'link-factorial/' directory
 * Linker commandline flags: -o linked.obj main.obj fact.obj print.obj stack.obj ending.obj
