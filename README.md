@@ -44,7 +44,7 @@ Draw on textual screen by typing commands to stdin.
 ### Selection sort
 Print trace of the selection sort algorithm.
 * Source code: selectsort.asm
-* Frequenct: 1000 Hz = 1 kHz
+* Frequency: 1000 Hz = 1 kHz
 * Author: Naum Gjorgjeski
 
 ### Link - Factorial
@@ -57,4 +57,42 @@ Linking order: main.obj, fact.obj, print.obj, stack.obj, ending.obj
 * Textual screen: 80x25 at B800
 * Frequency: 10000 Hz = 10kHz
 * Author: Nejc Kišek
+
+### Brainfuck Language Interpreter
+Executes an arbitrary program written in [Brainfuck language](https://en.wikipedia.org/wiki/Brainfuck). Upon starting, program waits for input to stdin (console input). **Paste or type the program as a single line, ending the entry sequence by pressing `Enter` (EOT character)**. Interpreter will read and execute the program.  When/if Brainfuck program finishes, interpreter will wait for next program to be entered. 
+
+Tape size and instruction stack size are limited to 400 Bytes each (400 cells and 400 separate instructions). For more, resize `stackstart` and `tape#` variables. 
+
+* Source code: brainfuck.asm
+* Frequency: Depending on program, generally recommended at least 10000 Hz (10 kHz)
+* Author: [Tine Šubic](https://github.com/MikroMan)/MikroMan
+
+**Example programs:**
+
+**Print Hello World! to stdout:**  
+`++++++++++[>+>+++>+++++++>++++++++++<<<<-]>>>++.>+.+++++++..+++.<<++.>+++++++++++++++.>.+++.------.--------.<<+.<.`
+
+**Print x^2 for X in range [0,100] to stdout:**    
+`++++[>+++++<-]>[<+++++>-]+<+[>[>+>+<<-]++>>[<<+>>-]>>>[-]++>[-]+>>>+[[-]++++++>>>]<<<[[<++++++++<++>>-]+<.<[>----<-]<]<<[>>>>>[>>>[-]+++++++++<[>-<-]+++++++++>[-[<->-]+[<<<]]<[>+<-]>]<<-]<<-]`
+
+**Print powers of two to stdout:**
+`>++++++++++>>+<+[[+++++[>++++++++<-]>.<++++++[>--------<-]+<<]>.>[->[<++>-[<++>-[<++>-[<++>-[<-------->>[-]++<-[<++>-]]]]]]<[>+<-]+>>]<<]`
+
+**Copy standard input to standard output (cat):**  
+`,[.,]`
+
+**Print ASCII charset to stdout:**  
+`.+[.+]`
+
+**Print Sierpinski triangle to stdout:**  
+`>++++[<++++++++>-]>++++++++[>++++<-]>>++>>>+>>>+<<<<<<<<<<[-[->+<]>[-<+>>>.<<]>>>[[->++++++++[>++++<-]>.<<[->+<]+>[->++++++++++<<+>]>.[-]>]]+<<<[-[->+<]+>[-<+>>>-[->+<]++>[-<->]<<<]<<<<]++++++++++.+++.[-]<]+++++`
+
+ 
+
+
+
+
+
+
+
 
