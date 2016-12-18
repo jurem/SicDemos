@@ -87,7 +87,13 @@ Tape size and instruction stack size are limited to 400 Bytes each (400 cells an
 **Print Sierpinski triangle to stdout:**  
 `>++++[<++++++++>-]>++++++++[>++++<-]>>++>>>+>>>+<<<<<<<<<<[-[->+<]>[-<+>>>.<<]>>>[[->++++++++[>++++<-]>.<<[->+<]+>[->++++++++++<<+>]>.[-]>]]+<<<[-[->+<]+>[-<+>>>-[->+<]++>[-<->]<<<]<<<<]++++++++++.+++.[-]<]+++++`
 
- 
+ ### Text Wall
+A demo for SicTools text screen. Creates streams of numbers and scrolls them vertically over the screen in a matrix-like style.
+
+* Source code: txtwal.asm
+* Textual screen: 80x25 at B800
+* Frequency: 10^5Hz to 10^7Hz
+* Author: Jan Makovecki
 
 
 
