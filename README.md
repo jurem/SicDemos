@@ -92,7 +92,7 @@ The program draws the sierpinski triangle and is also capabile of drawing other 
 The triangle is drawn iteratively, one point at a time, on a 200 by 200 window. This is implemented with two nested linear congruential generators.
 * Source code: sier.asm
 * Frequency: Depending uppon how fast you want the triangle to be rendered. 5000 Hz for medium speed and 10000 Hz for fast speed.
-* Graphical screen: 200x200
+* Graphical screen: 200x200 at A000
 * Author: Peter Mlakar
 
  
