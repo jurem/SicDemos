@@ -87,7 +87,7 @@ Tape size and instruction stack size are limited to 400 Bytes each (400 cells an
 **Print Sierpinski triangle to stdout:**  
 `>++++[<++++++++>-]>++++++++[>++++<-]>>++>>>+>>>+<<<<<<<<<<[-[->+<]>[-<+>>>.<<]>>>[[->++++++++[>++++<-]>.<<[->+<]+>[->++++++++++<<+>]>.[-]>]]+<<<[-[->+<]+>[-<+>>>-[->+<]++>[-<->]<<<]<<<<]++++++++++.+++.[-]<]+++++`
 
-###The Chaos game Sierpinski Sierpinski triangle
+###The Chaos game Sierpinski triangle
 The program draws the sierpinski triangle and is also capabile of drawing other fractals, that can be drawn by the chaos game, with a bit of tweeking.
 The triangle is drawn iteratively, one point at a time, on a 200 by 200 window. This is implemented with two nested linear congruential generators.
 * Source code: sier.asm
