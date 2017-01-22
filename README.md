@@ -89,6 +89,14 @@ Tape size and instruction stack size are limited to 400 Bytes each (400 cells an
 **Print Sierpinski triangle to stdout:**  
 `>++++[<++++++++>-]>++++++++[>++++<-]>>++>>>+>>>+<<<<<<<<<<[-[->+<]>[-<+>>>.<<]>>>[[->++++++++[>++++<-]>.<<[->+<]+>[->++++++++++<<+>]>.[-]>]]+<<<[-[->+<]+>[-<+>>>-[->+<]++>[-<->]<<<]<<<<]++++++++++.+++.[-]<]+++++`
 
+### The Chaos game Sierpinski triangle
+The program draws the sierpinski triangle and is also capabile of drawing other fractals, that can be drawn by the chaos game, with a bit of tweeking.
+The triangle is drawn iteratively, one point at a time, on a 200 by 200 window. This is implemented with two nested linear congruential generators.
+* Source code: sier.asm
+* Frequency: Depending uppon how fast you want the triangle to be rendered. 5000 Hz for medium speed and 10000 Hz for fast speed.
+* Graphical screen: 200x200 at A000
+* Author: Peter Mlakar
+ 
 ### Text Wall
 A demo for SicTools text screen. Creates streams of numbers and scrolls them vertically over the screen in a matrix-like style.
 
