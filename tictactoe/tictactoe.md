@@ -5,5 +5,5 @@ SIC/XE text game for two players. Board is presented with ASCII characters. Ever
 Game does not check given input so care has to be taken. Wrong input is going to crash the program. Make sure to read all instructions printed on screen!
 
 * Source code: tictactoe.asm
-* Frequency: 
+* Frequency: 10000 Hz = 10 kHz
 * Author: Jakob Merljak
