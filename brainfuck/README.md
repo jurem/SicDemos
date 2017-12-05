@@ -10,9 +10,9 @@ Tape size and instruction stack size are limited to 400 Bytes each (400 cells an
 
 * Source code: brainfuck.asm
 * Frequency: Depending on program, generally recommended at least 10000 Hz (10 kHz)
-* Author: [Tine Šubic](https://github.com/MikroMan)/MikroMan
+* Author: [Tine Šubic](https://github.com/MikroMan)/MikroMan, 2016
 
-# Example Brainfuck Programs
+### Example Brainfuck Programs
 
 **Print Hello World! to stdout:**  
 `++++++++++[>+>+++>+++++++>++++++++++<<<<-]>>>++.>+.+++++++..+++.<<++.>+++++++++++++++.>.+++.------.--------.<<+.<.`

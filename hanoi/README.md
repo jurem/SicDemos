@@ -13,4 +13,4 @@ Graphical animation of the famous Towers of Hanoi puzzle.
 * Source code: hanoi_graphical.asm
 * Graphical screen: 64 rows x 128 columns at A000
 * Frequency: 1000000 Hz = 1 MHz
-* Author: Kristjan Voje
+* Author: Kristjan Voje, 2016
