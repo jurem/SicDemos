@@ -141,7 +141,7 @@ clr         CLEAR   A           .clear register state
 readinstr   STL     retaddr
 readloop    CLEAR   A
             RD      idev        .while not end of line, read commands from input
-            COMP    =X'00000D'  .check for EOT character
+            COMP    =X'00000A'  .check for EOT character
             JEQ     finish
             STCH    @stackptr   .save each command to stack
             JSUB    stackpush
