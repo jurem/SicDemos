@@ -23,3 +23,12 @@ The triangle is drawn iteratively, one point at a time, on a 200 by 200 window. 
 * Graphical screen: 200x200 at A000
 * Author: Peter Mlakar, 2016
 
+## Mandelbrot set visualization
+Draw a visualization of the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) in the range between -2, 2, 2i and -2i.
+For each pixel the color is computed as a number of iterations needed to escape the circle around 0 with the radius 2, mapped to a color range.
+Almost all computation is done in floating point, save for loops and iteration count.
+* Source code: mandel.asm
+* Graphical screen 1000x1000 at A000
+* Frequency: 10000000 Hz = 10 MHz
+    * Drawing time can be vastly sped-up by resizing the screen or lowering the number of iterations, but appropriate variables must be adjusted (width, height, iter).
+* Author: Blaž Rojc, 2018
