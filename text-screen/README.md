@@ -24,3 +24,10 @@ A simple maze game made with SicTools text screen. A sample maze is printed to t
 * Textual screen: 80x25 at B800
 * Frequency: 1000 Hz
 * Author: Mihael Rajh, 2018
+
+## Game of Life
+A simple zero-player game simulating the evolution. User can change which pattern program uses for its initial configuration. Choose wisely: entire "game" is completely determined by its initial state. Three initial patterns are already prepared.
+* Source code: game_of_life.asm
+* Textual screen: 80x25 at B800
+* Frequency: 500000 Hz = 500 kHz
+* Author: [Žan Magerl](https://github.com/polhec42), 2019
