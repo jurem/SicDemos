@@ -32,3 +32,12 @@ Almost all computation is done in floating point, save for loops and iteration c
 * Frequency: 10000000 Hz = 10 MHz
     * Drawing time can be vastly sped-up by resizing the screen or lowering the number of iterations, but appropriate variables must be adjusted (width, height, iter).
 * Author: Blaž Rojc, 2018
+
+## Rain drops
+Simulates and visualizes rain on the graphical screen. Clock speed has to be at least 10000 = 10kHz but it needs to be increased with more drops and bigger screen. Drop count and screen size is adjustable. Change drops,count and randP to the desired drop count and scrow and sccol to the desired display dimensions (and then change the dimensions in the sictools simulator setting). At the start of the program random starting positions and seeds for the drops are set. After that an endless loop is executed where each drop is moved. 
+ * Source code: rain.asm
+ * Graphical screen: 64x64 at A000
+ 	* dimensions can be adjusted at will
+ * Frequency: 10000Hz = 10KHz
+ 	* Must be adjusted if screen size od drop count is bigger 
+ * Author: Martin Resman, 2019
