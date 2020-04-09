@@ -11,6 +11,8 @@ Solve the famous Towers of Hanoi puzzle. Register A is set up with the initial n
 ## Towers of Hanoi - graphical screen
 Graphical animation of the famous Towers of Hanoi puzzle.
 * Source code: hanoi_graphical.asm
-* Graphical screen: 64 rows x 128 columns at A000
+* Graphical screen: 32 rows x 128 columns at A000
 * Frequency: 1000000 Hz = 1 MHz
 * Author: Kristjan Voje, 2016
+
+![Picture of the graphical screen and Towers of Hanoi in action](./hanoi_graphical.png)
