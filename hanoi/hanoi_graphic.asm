@@ -1,6 +1,6 @@
 .similar to demo hanoy1.py
 .SETTINGS: 	before calling hanoy(), set number of rings in variable nrings (up to 15)
-.		graphical screen should have 128 columns, 32 rows, pixel size 4
+.		graphical screen should have 96 columns, 32 rows, pixel size 4
 .		frequency should be 1MHz or higher.
 .set speed to 1Mhz
 
@@ -20,12 +20,12 @@ hanoy1	START	0
 	STA	droffs
 
 	.draw
-	LDA	#0x0000FF
-	STCH	color
+	LDA	drawon
+	STA	drmask
 	JSUB	draw3
 	JSUB	hhhalt
-	LDA	#0x000000
-	STCH	color
+	LDA	drawoff
+	STA	drmask
 	JSUB	draw3
 
 	.call hanoy()
@@ -34,8 +34,8 @@ hanoy1	START	0
 	JSUB	hanoy
 
 	.draw again
-	LDA	#0x0000FF
-	STCH	color
+	LDA	drawon
+	STA	drmask
 	JSUB	draw3
 
 HALT	J	HALT
@@ -160,14 +160,14 @@ hanoy	COMP	#0 		.if n == 0, return
 
 	.print
 	RMO	A, X	.save A
-	LDA	#0x0000FF
-	STCH	color
+	LDA	drawon
+	STA	drmask
 	JSUB	draw3
 
 	JSUB	hhhalt
 
-	LDA	#0x000000
-	STCH	color
+	LDA	drawoff
+	STA	drmask
 	JSUB	draw3
 	RMO	X, A
 
@@ -216,6 +216,9 @@ draw3	STL	stltmp
 	RMO	S, A
 	ADD 	#16	.offset the first tower 16 pixels to the right (center of first tower)
 	RMO	A, S
+	LDA	rodclr1
+	AND	drmask
+	STCH	color
 	RMO	T, A
 	JSUB	drtow
 	RMO	T, A
@@ -225,6 +228,9 @@ draw3	STL	stltmp
 	RMO 	S, A
 	ADD 	#32	.draw next tower 32 pixels to the right
 	RMO	A, S
+	LDA	rodclr2
+	AND	drmask
+	STCH	color
 	RMO	T, A
 	JSUB	drtow
 	RMO	T, A
@@ -234,6 +240,9 @@ draw3	STL	stltmp
 	RMO 	S, A
 	ADD 	#32	.draw next tower 32 pixels to the right
 	RMO	A, S
+	LDA	rodclr3
+	AND	drmask
+	STCH	color
 	RMO	T, A
 	JSUB	drtow
 	RMO	T, A
@@ -255,9 +264,20 @@ towlp	RMO	A, T	.save A
 	LDCH	@tmp
 	COMP	#0	.check if we're past the last ring in memory.
 	JEQ	towrt
-	.draw line of length A to address S
-	JSUB	drline
 
+	.draw line of length A*2 to address S
+	MUL	#2
+	JSUB	drline
+	RMO	S, A
+	SUB 	drcols
+	RMO	A, S	.S decreases by 1 row
+
+	.draw the second line
+	STT	tmp
+	LDA 	#0
+	LDCH	@tmp
+	MUL	#2
+	JSUB	drline
 	RMO	S, A
 	SUB 	drcols
 	RMO	A, S	.S decreases by 1 row
@@ -317,9 +337,10 @@ drloff	RESW	1
 draddr	WORD	0xA000
 droffs	RESW	1
 tmpffs	RESW	1
-drcols	WORD	128
+drcols	WORD	96
 drrows	WORD	64
 color	BYTE	0xFF
+drmask	WORD	0xFFFFFF
 
 .data
 nrings	WORD	15
@@ -334,7 +355,11 @@ maskc	WORD	0x0000FF
 maskab	WORD	0xFFFF00
 rodaddr	WORD	0xA00
 rodtmp	RESW	1
-
+rodclr1 WORD	0xCB
+rodclr2	WORD	0xB0
+rodclr3	WORD	0xC8
+drawoff	WORD	0x000000
+drawon	WORD	0xFFFFFF
 
 
 .###### STACK ######
