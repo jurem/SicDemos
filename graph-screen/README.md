@@ -3,7 +3,9 @@ This demo is part of SicDemos: a collection of assembly programs for the SIC/XE 
 
 ## Color table
 A table of colors to help pick the colors to use in the graphical screen programs. Additional help for using the graphical screen can be found on the [Simulator documentation](http://jurem.github.io/SicTools/documentation/simulator).
+
 ![Color table demo](./color-table.png)
+
 * Source code: color-table.asm
 * Graphical screen: 109x109 at A000
 * Frequency: 100000 Hz = 100 kHz
