@@ -29,7 +29,7 @@ drGrid	STL	@stPtr	. Push L to stack
 	... draw one row of the table grid
 drGrRow CLEAR	X	. X stores the current column
 	LDB	white	. B stores the color
-	LDS	spClRwL	. S stores Column / row limit
+	LDS	spClRwL	. S stores column / row limit
 drGrCol	LDA	addr
 	ADD	#4
 	JSUB	drPxl
@@ -52,7 +52,7 @@ drGrCol	LDA	addr
 	LDA	curRow
 	COMPR	A, S
 	.--------------
-	JEQ	drGrOut	. We have drawn enough rows
+	JEQ	drGy	. We have drawn enough rows
 	.--------------
 	ADD	#1
 	STA	curRow
@@ -93,6 +93,60 @@ drHrLnO	STA	addr
 	ADD	cols	. Add black line in between
 	STA	addr
 	J	drHrLn
+
+	... draw the gray separator lines
+	... start with the vertical lines
+drGy	LDA	dispAd
+	STA	addr
+	CLEAR	T	. T stores the current row
+	STT	curRow
+	LDB	gray	. B stores the color
+	LDS	#3	. S stores column limit
+	... draw one row of the table grid
+drGyRow CLEAR	X	. X stores the current column
+drGyCol	LDA	addr
+	ADD	#26
+	JSUB	drPxl
+	ADD	#2
+	STA	addr
+	TIXR	S
+	JLT	drGyCol
+	... we have now drawn all the pixels in this row
+	ADD	#25
+	STA	addr
+	RMO	T, A
+	COMP	#spClRwL . Check if rows done
+	ADD	#1
+	RMO	A, T
+	JLT	drGyRow
+	... we have now drawn all of the vertical gray lines
+drHy	LDA	dispAd
+	STA	addr
+	CLEAR	T	. T stores the current row
+	LDB	gray	. B stores the color
+	LDS	cols	. S stores the column limit
+drHyLn	CLEAR	X	. X stores the current column
+	CLEAR	A
+	LDA	cols
+	MUL	#26	. 3x7 rows + 1x5 row
+	ADD	addr
+	STA	addr
+drHyCol	LDA	addr
+	JSUB	drPxl
+	ADD	#1
+	STA	addr
+	TIXR	S
+	JLT	drHyCol
+	... we have now drawn a horizal gray line
+	ADD	cols
+	STA	addr
+	RMO	T, A
+	ADD	#1
+	RMO	A, T
+	COMP	#4	. Check if we have drawn all lines
+	JLT	drHyLn
+	... we have drawn all lines, exit
+	J	drGrOut
 
 	... all rows have been written
 	... restore stack
@@ -209,6 +263,7 @@ cols	WORD	109	. Amount of columns on display
 
 ... Colors
 black	WORD	0x00
+gray	WORD	0xEA
 white	WORD	0xFF
 
 ... Grid
