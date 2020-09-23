@@ -1,8 +1,8 @@
 .similar to demo hanoy1.py
 .SETTINGS: 	before calling hanoy(), set number of rings in variable nrings (up to 15)
-.		graphical screen should have 128 columns, 64 rows, pixel size 4	
+.		graphical screen should have 96 columns, 32 rows, pixel size 4
 .		frequency should be 1MHz or higher.
-.set speed to 1Mhz 
+.set speed to 1Mhz
 
 hanoy1	START	0
 	.set number of rings
@@ -11,7 +11,7 @@ hanoy1	START	0
 
 	.initiate rods in memory
 	LDA	nrings		.set number of rods
-	JSUB	rodinit	
+	JSUB	rodinit
 
 	.initiate drawing to graphical screen
 	LDA	drcols
@@ -20,22 +20,22 @@ hanoy1	START	0
 	STA	droffs
 
 	.draw
-	LDA	#0x0000FF
-	STCH	color
+	LDA	drawon
+	STA	drmask
 	JSUB	draw3
 	JSUB	hhhalt
-	LDA	#0x000000
-	STCH	color
+	LDA	drawoff
+	STA	drmask
 	JSUB	draw3
 
 	.call hanoy()
-	LDA	nrings	
+	LDA	nrings
 	+LDS	#0x001020	.starting permutation (A,B,C)
 	JSUB	hanoy
 
 	.draw again
-	LDA	#0x0000FF
-	STCH	color
+	LDA	drawon
+	STA	drmask
 	JSUB	draw3
 
 HALT	J	HALT
@@ -65,7 +65,7 @@ initlp	STT	rodtmp
 	JEQ	endinit
 	ADDR	X, T
 	J	initlp
-	
+
 endinit	LDA	tmp
 	RSUB
 
@@ -73,12 +73,12 @@ endinit	LDA	tmp
 .rod address is in A
 finfrst	STL	stltmp
 	JSUB	pushAll
-	
+
 	.subroutine code
 	LDX	#1
 	STA	rodtmp
 loopff	LDA	#0		.always do LDA #0 before LDCH !!!
-	LDCH	@rodtmp	
+	LDCH	@rodtmp
 	COMP	#0
 	JEQ	endff
 	LDT	rodtmp
@@ -121,7 +121,7 @@ hanoy	COMP	#0 		.if n == 0, return
 	.call recursion
 	RMO	A, S
 	RMO	X, A
-	JSUB	hanoy	
+	JSUB	hanoy
 	RMO	X, A	.original A
 	RMO	T, S 	.original S
 
@@ -142,13 +142,13 @@ hanoy	COMP	#0 		.if n == 0, return
 	LDT	@tmp	.value of the ring
 	STT	topring
 	LDT 	#0
-	STT	@tmp	.removed top ring from a, saved in topring	
-	
+	STT	@tmp	.removed top ring from a, saved in topring
+
 	.put it onto b
 	RMO	S, A	.S is still original here
 	AND	maskb
-	SHIFTR	A, 8	.0x0000bb	
-	ADD	rodaddr	
+	SHIFTR	A, 8	.0x0000bb
+	ADD	rodaddr
 	JSUB	finfrst	.first empty space on rod b
 	STA	tmp	.address of the space
 	LDT	topring
@@ -157,17 +157,17 @@ hanoy	COMP	#0 		.if n == 0, return
 	.A = n again
 	RMO X, A
 	.S is still original
-		
+
 	.print
 	RMO	A, X	.save A
-	LDA	#0x0000FF
-	STCH	color
+	LDA	drawon
+	STA	drmask
 	JSUB	draw3
 
 	JSUB	hhhalt
 
-	LDA	#0x000000
-	STCH	color
+	LDA	drawoff
+	STA	drmask
 	JSUB	draw3
 	RMO	X, A
 
@@ -184,7 +184,7 @@ hanoy	COMP	#0 		.if n == 0, return
 	RMO	S, A
 	AND	maskc
 	SHIFTL	A, 16
-	+STA	permc	.0xcc0000	
+	+STA	permc	.0xcc0000
 	+LDA	perma
 	OR	permb
 	OR	permc	.0xccbbaa
@@ -195,7 +195,7 @@ hanoy	COMP	#0 		.if n == 0, return
 	JSUB	hanoy
 	RMO	X, A
 	RMO	T, S
-	
+
 endhan	JSUB	popAll
 	LDL	stltmp
 rquick	RSUB
@@ -216,6 +216,9 @@ draw3	STL	stltmp
 	RMO	S, A
 	ADD 	#16	.offset the first tower 16 pixels to the right (center of first tower)
 	RMO	A, S
+	LDA	rodclr1
+	AND	drmask
+	STCH	color
 	RMO	T, A
 	JSUB	drtow
 	RMO	T, A
@@ -225,16 +228,22 @@ draw3	STL	stltmp
 	RMO 	S, A
 	ADD 	#32	.draw next tower 32 pixels to the right
 	RMO	A, S
-	RMO	T, A	
+	LDA	rodclr2
+	AND	drmask
+	STCH	color
+	RMO	T, A
 	JSUB	drtow
 	RMO	T, A
-	
+
 	ADD	#0x10	.memory addr of next tower
 	RMO	A, T	.save A
 	RMO 	S, A
 	ADD 	#32	.draw next tower 32 pixels to the right
 	RMO	A, S
-	RMO	T, A	
+	LDA	rodclr3
+	AND	drmask
+	STCH	color
+	RMO	T, A
 	JSUB	drtow
 	RMO	T, A
 
@@ -255,16 +264,27 @@ towlp	RMO	A, T	.save A
 	LDCH	@tmp
 	COMP	#0	.check if we're past the last ring in memory.
 	JEQ	towrt
-	.draw line of length A to address S
-	JSUB	drline
 
+	.draw line of length A*2 to address S
+	MUL	#2
+	JSUB	drline
+	RMO	S, A
+	SUB 	drcols
+	RMO	A, S	.S decreases by 1 row
+
+	.draw the second line
+	STT	tmp
+	LDA 	#0
+	LDCH	@tmp
+	MUL	#2
+	JSUB	drline
 	RMO	S, A
 	SUB 	drcols
 	RMO	A, S	.S decreases by 1 row
 
 	RMO	T, A
 	ADD 	#1	.A increases by 1
-	J	towlp	
+	J	towlp
 
 towrt	JSUB	popAll
 	LDL	stltmp
@@ -285,23 +305,23 @@ drloop	STA	tmp
 	LDA	#0
 	LDCH	color
 	STCH	@tmpffs
-	LDA	tmp	
+	LDA	tmp
 
-	.draw pixel in (-) direction	
+	.draw pixel in (-) direction
 	RMO	S, T	.swap A and S
 	RMO	A, S
 	RMO	T, A
-		
+
 	SUBR	S, A
 	ADD	#1
 	STA	tmpffs
 	LDA	#0
 	LDCH	color
 	STCH	@tmpffs
-	LDA	tmp	
+	LDA	tmp
 
 	RMO	T, S	.restore S
-	
+
 	SUB 	#1
 	COMP	#0
 	JGT	drloop
@@ -317,9 +337,10 @@ drloff	RESW	1
 draddr	WORD	0xA000
 droffs	RESW	1
 tmpffs	RESW	1
-drcols	WORD	128
+drcols	WORD	96
 drrows	WORD	64
 color	BYTE	0xFF
+drmask	WORD	0xFFFFFF
 
 .data
 nrings	WORD	15
@@ -334,7 +355,11 @@ maskc	WORD	0x0000FF
 maskab	WORD	0xFFFF00
 rodaddr	WORD	0xA00
 rodtmp	RESW	1
-
+rodclr1 WORD	0xCB
+rodclr2	WORD	0xB0
+rodclr3	WORD	0xC8
+drawoff	WORD	0x000000
+drawon	WORD	0xFFFFFF
 
 
 .###### STACK ######
@@ -351,9 +376,9 @@ rodtmp	RESW	1
 .### pushAll ### ... do not save A, it's used as a return register
 pushAll J       pushL
 
-pushL   STA     sttmp 
+pushL   STA     sttmp
         LDA     stltmp .we take the return addr of the function that called pushAll
-        STA     @stptr 
+        STA     @stptr
         LDA     sttmp
         STA     sttmp  .increment stptr
         LDA     stptr
@@ -431,7 +456,7 @@ popL    STA     sttmp  .decrement stptr
         LDA     sttmp
 
         RSUB
-         
+
 .### stack variables ###
 staddr  WORD    0xBB80
 stptr   WORD    0xBB80

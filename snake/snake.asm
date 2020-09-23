@@ -4,24 +4,29 @@
 ... Author: Jakob Erzar
 ... Plugins: Keyboard & Textual screen
 ... Frequency: 200000 Hz = 200 kHz
+... Screen size is 25x80, but configurable via row and column symbols 
 ... Controls:
 ... 	- A -> move left
 ...	- D -> move right
 
-start 	START	0
+start	START	0
 	JSUB	skInit	. Init the stack
 	... initialize variables
 	LDA	row
+	SUB	#1	. Reserve bottom row for score
 	STA	rowLmt	. Row limit
 	LDA	column
 	STA	colLmt	. Column limit
+	MUL	rowLmt
+	STA	gridlen . Store grid length
 	LDT	#3	. Incrementor
 	LDA	nBodies
 	MUL	#3
 	RMO	A, S	. Table limit
 	... display food
 	JSUB	showFd
-
+	... initialize score
+	JSUB	initSc
 	... initialize snake
 	LDA	#40
 	STA	bodyX
@@ -29,7 +34,7 @@ start 	START	0
 	STA	bodyY
 	LDX	#0
 
-	... draw initial state
+... draw initial state
 initlp	JSUB	calcPlc
 	CLEAR	A
 	LDCH	bodyC
@@ -177,7 +182,7 @@ chckCrd	STL	@skPtr
 	JEQ	crash
 	COMP	#0
 	JLT	crash
-	... pop S register
+... pop S register
 chckBck	JSUB	skPop
 	LDS	@skPtr
 	... pop L register
@@ -206,6 +211,7 @@ incrSnk	LDA	nBodies
 	STA	keytime
 	STL	@skPtr	. Push L
 	JSUB	skPush
+	JSUB	scIncr
 	JSUB	genFood
 	JSUB	showFd
 
@@ -228,12 +234,88 @@ showFd	STL	@skPtr
 genFood	LDA	foodPlc
 	MUL	foodGnM
 	ADD	foodGnA
-genFdMd	COMP	displen
+genFdMd	COMP	gridlen
 	JLT	gendFd
-	SUB	displen
+	SUB	gridlen
 	J	genFdMd
 gendFd	STA	foodAd
 	RSUB
+
+... initialize the score
+initSc	STL	@skPtr
+	JSUB	skPushA	. Push all registers
+	LDX	#0	. X holds the string index
+	LDA	disp
+	ADD	gridlen	. Calculate starting coordinate
+	RMO	A, B	. B holds the display address
+	STA	tmp	
+scStrLp	+LDA	#scStr
+	ADDR	X, A
+	STA	tmp
+	CLEAR	A
+	LDCH	@tmp	. Load the character into A
+	STB	tmp
+	STCH	@tmp	. Put the character on display
+	RMO	B, A
+	ADD	#1
+	RMO	A, B	. Increment B
+	TIX	scStrLn	. Check if wrote all chars
+	JLT	scStrLp
+	... we have written the string; now write the score
+	STB	tmp
+	LDA	#0x30	. Load ASCII for 0
+	STCH	@tmp	. Write 0 to display
+	RMO	B, A
+	ADD	#1
+	RMO	A, B	. Increment B
+	TIXR	A	. Increment X
+	STB	scLoc	. Store location of the second 0
+	STB	tmp
+	LDA	#0x30	. Load ASCII for 0
+	STCH	@tmp	. Write 0 to display
+	RMO	B, A
+	ADD	#1
+	RMO	A, B	. Increment B
+	TIXR	A	. Increment X
+	STB	tmp
+	LDA	#0x20	. Load ASCII for ' '
+	STCH	@tmp	. Write ' ' to display
+	RMO	B, A
+	ADD	#1
+	RMO	A, B	. Increment B
+	TIXR	A	. Increment X
+... we have now written the score, add a fence to the end
+scFence	CLEAR	A
+	LDA	#0x2D	. Load ASCII for '-'	
+	STB	tmp
+	STCH	@tmp	. Write '-' to display
+	RMO	B, A
+	ADD	#1
+	RMO	A, B	. Increment B
+	TIX	column	. Check if reached end of screen
+	JLT	scFence
+	... finish
+	JSUB	skPopA	. Pop all registers
+	LDL	@skPtr
+	RSUB
+
+... increment the score
+scIncr	CLEAR	A
+	LDCH	@scLoc
+	ADD	#1
+	COMP	#0x3A	. Check if gone over 9
+	JLT	scIncrS
+	LDA	scLoc
+	SUB	#1
+	STA	tmp	. Store address for first digit
+	CLEAR	A
+	LDCH	@tmp	
+	ADD	#1	. Increase left digit for 1
+	STCH	@tmp
+	LDA	#0x30	. Load ASCII for 0
+scIncrS	STCH	@scLoc	. Store the last digit
+	RSUB
+
 
 ... reads the key from the keyboard
 ... it waits some time first, doing nothing...
@@ -245,7 +327,7 @@ readKey	CLEAR	A
 	STA	keyrng
 	LDA	keytime
 	STA	keywait
-	... kill some time here
+... kill some time here
 keyWtLp	CLEAR	A
 	LDA	keyrng
 	COMP	#0
@@ -262,7 +344,7 @@ keyWtLp	CLEAR	A
 	LDA	keywait
 	SUB	#2	. make up for time wasted
 	STA 	keywait
-	... continue here if user already pressed the key
+... continue here if user already pressed the key
 keyWtSb	LDA 	keywait
 	SUB	#1
 	STA	keywait
@@ -327,6 +409,32 @@ skPop	LDA	skPtr
 	SUB	#3
 	STA	skPtr
 	RSUB
+... Subroutine Stack Push All (requires STL @skPtr in front)
+skPushA	STL	skIntrL	. Store our L
+	JSUB	skPush	. Push L
+	STX	@skPtr	
+	JSUB	skPush	. Push X
+	STS	@skPtr	
+	JSUB	skPush	. Push S
+	STT	@skPtr	
+	JSUB	skPush	. Push T
+	STB	@skPtr	
+	JSUB	skPush	. Push B
+	LDL	skIntrL	. Restore our L
+	RSUB
+... Subroutine Stack Pop All (requires LDL @skPtr afterwards)
+skPopA	STL	skIntrL	. Store our L
+	JSUB	skPop	. Pop B
+	LDB	@skPtr
+	JSUB	skPop	. Pop T
+	LDT	@skPtr	
+	JSUB	skPop	. Pop S
+	LDS	@skPtr	
+	JSUB	skPop	. Pop X
+	LDX	@skPtr	
+	JSUB	skPop	. Pop L
+	LDL	skIntrL	. Restore our L
+	RSUB
 
 
 ... -------------------------------
@@ -374,28 +482,36 @@ foodC	BYTE	X'58'	. 58 => X
 leftC	WORD	X'000041'	. 65 => A
 rightC	WORD	X'000044'	. 68 => D
 
+... Score
+scStr	BYTE	C' Score: '	. Score string
+scStrLn	WORD	8	. Score string length
+scLoc	RESW	1	. Address of the score
+
 ... Display configuration
 disp	WORD	X'00B800'
 row	WORD	25
 column	WORD	80
-displen	WORD	2000
 
 ... Keyboard configuration
 keybord	WORD	X'00C000'
-keytime WORD	3000	. Amount of time to wait for registration of a key
+keytime	WORD	3000	. Amount of time to wait for registration of a key
 keysub	WORD	40	. Amount of time to subtract when increasing body
 
 ... Keyboard variables
 keywait	RESW	1	. Amount of time to wait left
 keyrng	RESW	1	. Whether the key press has already been used for rng
-rdk 	RESW	1	. The key that was just read
+rdk	RESW	1	. The key that was just read
 
 ... Automatically initialized
 rowLmt	RESW	1	. Limit for the rows (Y)
 colLmt	RESW	1	. Limit for the columns (X)
+gridlen	RESW	1	. Amount of pixels used for the grid
 
 ... Stack variables
 skPtr	RESW	1
 skStart	RESW	200
+skIntrL	RESW	1	. Stored L for use inside stack routines
 
+... Temporary variables
+tmp	RESW	1
 	END	start
