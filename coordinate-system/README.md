@@ -10,8 +10,6 @@ Use standard input to give the program instructions on what to draw.
 * Author: Ambrož Janc, 2020
 
 How to use:
- - graphical screen, 109x109 
- - frequency, 10000 (1000 works as well)
  - input: 
 	- colour is element of {r - red, w - white, y - yellow, g - green}
 	- x, y and n are elements of [-5, 5]
@@ -31,6 +29,7 @@ How to use:
 
 ## Coordinate System - graphical screen
 ![Picture of the graphical screen of the coordinate system](./graphical-screen.png)
+
 Graphical animation of a coordinate system.
 * Source code: KoordinatniSistem.asm
 * Graphical screen: 109 rows x 109 columns at A000
