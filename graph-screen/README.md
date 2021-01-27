@@ -44,10 +44,17 @@ Almost all computation is done in floating point, save for loops and iteration c
 * Author: Blaž Rojc, 2018
 
 ## Rain drops
-Simulates and visualizes rain on the graphical screen. Clock speed has to be at least 10000 = 10kHz but it needs to be increased with more drops and bigger screen. Drop count and screen size is adjustable. Change drops,count and randP to the desired drop count and scrow and sccol to the desired display dimensions (and then change the dimensions in the sictools simulator setting). At the start of the program random starting positions and seeds for the drops are set. After that an endless loop is executed where each drop is moved. 
- * Source code: rain.asm
- * Graphical screen: 64x64 at A000
- 	* dimensions can be adjusted at will
- * Frequency: 10000Hz = 10KHz
- 	* Must be adjusted if screen size od drop count is bigger 
- * Author: Martin Resman, 2019
+Simulates and visualizes rain on the graphical screen. Clock speed has to be at least 10000 = 10kHz but it needs to be increased with more drops and bigger screen. Drop count and screen size is adjustable. Change drops,count and randP to the desired drop count and scrow and sccol to the desired display dimensions (and then change the dimensions in the sictools simulator setting). At the start of the program random starting positions and seeds for the drops are set. After that an endless loop is executed where each drop is moved.
+* Source code: rain.asm
+* Graphical screen: 64x64 at A000
+   * dimensions can be adjusted at will
+* Frequency: 10000 Hz = 10 kHz
+   * Must be adjusted if screen size od drop count is bigger
+* Author: Martin Resman, 2019
+
+## Bouncy
+Animate moving bouncing balls on the graphical screen.
+* Source code: bouncy.asm
+* Graphical screen: 64x64 at A000
+* Frequency: 10000 Hz = 10 kHz
+* Author: Žiga Željko, 2020
