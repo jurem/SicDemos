@@ -62,7 +62,7 @@ Animate moving bouncing balls on the graphical screen.
 ## DVD screensaver
 Animated DVD logo as a screensaver.
 
-![DVD-screensaver demo](./dvd-screensaver.png)
+![DVD-screensaver demo](./dvd-screensaver.gif)
 
 Any parameters such as dx, dy, screen size, ... can be found and adjusted at the bottom of the file.
 * Source code: dvd-screensaver.asm
