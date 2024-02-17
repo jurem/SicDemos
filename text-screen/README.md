@@ -31,3 +31,9 @@ A simple zero-player game simulating the evolution. User can change which patter
 * Textual screen: 80x25 at B800
 * Frequency: 500000 Hz = 500 kHz
 * Author: [Žan Magerl](https://github.com/polhec42), 2019
+
+## Minesweeper
+A simple recreation of the classic minesweeper video-game. User can change the number of rows, columns and mines (at the end of the source file). After the screen has been loaded, press random keys while the keyboard window is in focus. The number of required key presses is equal to the number of mines (30 by default). Consecutive key presses of the same key will be registered as a single key press. After that, a `+` should appear on the top-left corner of the field. That is the cursor. Navigate the field using `W, A, S` and `D`, mark covered plots with `J` and uncover plots with `K`. Win the game by uncovering all the plots without a mine.
+* Source code: minesweeper.asm
+* Textual screen: 17x17 at B800
+* Frequency: 100000 Hz
