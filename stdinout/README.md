@@ -20,3 +20,9 @@ Test input in AA.dev and BA.dev
 * Source code of helper: helper_for_encoding.py
 * Frequency: 1000 Hz = 1 kHz
 * Author: [Rok Kos](https://github.com/RokKos), 2018
+
+## GCD/LCM
+Find the greatest common divisor and least common multiple of two numbers.
+* Source code: main.asm
+* Frequency: 1000 Hz = 1 kHz
+* Author: [褚翊喨（I Liang Chu）](https://github.com/whoami13579), 2024
